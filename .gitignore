@@ -1,0 +1,16 @@
+docs/
+CLAUDE.md
+.claude/
+.env
+.venv/
+node_modules/
+web/dist/
+eval/data/*/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+htmlcov/
+*.egg-info/
+users.acl
