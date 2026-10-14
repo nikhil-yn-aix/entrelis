@@ -1,0 +1,82 @@
+[project]
+name = "entrelis"
+version = "0.1.0"
+description = "bi-temporal truth maintenance for company knowledge"
+requires-python = ">=3.12"
+dependencies = [
+    "falkordb==1.7.1",
+    "pydantic-settings==2.16.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "hypothesis==6.169.0",
+    "import-linter==2.15",
+    "pyright==1.1.414",
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "pytest-cov==7.1.0",
+    "pytest-xdist==3.8.0",
+    "ruff==0.17.0",
+]
+
+[tool.uv.build-backend]
+module-name = "entrelis"
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests", "eval"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["entrelis", "eval"]
+
+[tool.pyright]
+include = ["src", "tests", "eval"]
+pythonVersion = "3.12"
+typeCheckingMode = "standard"
+strict = ["src/entrelis/kernel"]
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+
+[tool.importlinter]
+root_package = "entrelis"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "kernel imports no io library"
+type = "forbidden"
+source_modules = ["entrelis.kernel"]
+forbidden_modules = [
+    "falkordb",
+    "redis",
+    "httpx",
+    "fastapi",
+    "pydantic_ai",
+    "pydantic_settings",
+    "onnxruntime",
+    "tokenizers",
+    "slack_bolt",
+    "githubkit",
+    "structlog",
+    "opentelemetry",
+]
+allow_indirect_imports = false
+
+[[tool.importlinter.contracts]]
+name = "kernel imports no sibling package"
+type = "forbidden"
+source_modules = ["entrelis.kernel"]
+forbidden_modules = ["entrelis.config"]
